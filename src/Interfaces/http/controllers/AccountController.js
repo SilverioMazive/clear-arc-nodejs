@@ -1,5 +1,5 @@
 class AccountController {
-    constructor(createAccount, deposit, withdraw, getAccount, transfer, getAllAccounts, closeAccount) {
+    constructor(createAccount, deposit, withdraw, getAccount, transfer, getAllAccounts, closeAccount, updateAccountOwner) {
         this.createAccount = createAccount;
         this.deposit = deposit;
         this.withdraw = withdraw;
@@ -7,6 +7,7 @@ class AccountController {
         this.transfer = transfer;
         this.getAllAccounts = getAllAccounts;
         this.closeAccount = closeAccount;
+        this.updateAccountOwner = updateAccountOwner;
     }
 
     create(req, res) {
@@ -78,8 +79,20 @@ class AccountController {
         } catch (error) {
             res.status(400).json({ error: error.message });
         }
-    } 
-    
+    }
+
+    updateAccountName(req, res) {
+        try {
+            const { id } = req.params;
+            const { ownerName } = req.body;
+            const account = this.updateAccountOwner.execute(id, ownerName);
+            if (!account) return res.status(404).json({ error: "Account not found to update" });
+            res.json(account);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    }
+
 }
 
 module.exports = AccountController;

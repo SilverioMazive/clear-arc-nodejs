@@ -41,5 +41,9 @@ module.exports = (accountController, fileController) => {
         accountController.closeAccountAction(req, res)
     );
 
+    router.put("/accounts-update-name/:id", (req, res) =>
+        accountController.updateAccountName(req, res)
+    );
+
     return router;
 };
