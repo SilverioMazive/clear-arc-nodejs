@@ -1,11 +1,12 @@
 class AccountController {
-    constructor(createAccount, deposit, withdraw, getAccount, transfer, getAllAccounts) {
+    constructor(createAccount, deposit, withdraw, getAccount, transfer, getAllAccounts, closeAccount) {
         this.createAccount = createAccount;
         this.deposit = deposit;
         this.withdraw = withdraw;
         this.getAccount = getAccount;
         this.transfer = transfer;
         this.getAllAccounts = getAllAccounts;
+        this.closeAccount = closeAccount;
     }
 
     create(req, res) {
@@ -67,6 +68,18 @@ class AccountController {
             res.status(400).json({ error: error.message });
         }
     }
+
+    closeAccountAction(req, res) {
+        try {
+            const { id } = req.params;
+            const account = this.closeAccount.execute(id);
+            if (!account) return res.status(404).json({ error: "Account not found" });
+            res.json(account);
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    } 
+    
 }
 
 module.exports = AccountController;

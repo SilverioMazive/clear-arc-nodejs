@@ -31,11 +31,14 @@ module.exports = (accountController, fileController) => {
         accountController.getAll(req, res)
     );
 
-    // Falta teste com isso
     router.post(
         "/accounts-upload/photo/:id",
         upload.single("file"),
         (req, res) => fileController.upload(req, res)
+    );
+
+    router.delete("/accounts-close/:id", (req, res) =>
+        accountController.closeAccountAction(req, res)
     );
 
     return router;

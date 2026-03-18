@@ -16,6 +16,10 @@ class InMemoryAccountRepository {
     findAll() {
         return Array.from(this.accounts.values());
     }
+
+    delete(id) {
+        this.accounts.delete(id);
+    }
 }
 
 module.exports = InMemoryAccountRepository;

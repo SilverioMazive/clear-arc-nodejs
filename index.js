@@ -12,6 +12,7 @@ const GetAccount = require("./src/application/UseCases/GetAccount");
 const Transfer = require("./src/application/UseCases/Transfer");
 const GetAllAccounts = require("./src/application/UseCases/GetAllAccounts");
 const UploadFile = require("./src/application/UseCases/UploadFile");
+const CloseAccount = require("./src/application/UseCases/CloseAccount");
 
 // Controllers
 const AccountController = require("./src/interfaces/http/controllers/AccountController");
@@ -38,6 +39,7 @@ const getAccount = new GetAccount(repo);
 const transfer = new Transfer(repo);
 const getAllAccounts = new GetAllAccounts(repo);
 const uploadFile = new UploadFile(repo);
+const closeAccount = new CloseAccount(repo);
 
 // Controllers
 const accountController = new AccountController(
@@ -46,7 +48,8 @@ const accountController = new AccountController(
     withdraw,
     getAccount,
     transfer,
-    getAllAccounts
+    getAllAccounts,
+    closeAccount
 );
 
 const fileController = new FileController(uploadFile);
