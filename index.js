@@ -1,36 +1,46 @@
 const express = require("express");
-require('dotenv').config();
+require("dotenv").config();
 
+// Repository
 const InMemoryAccountRepository = require("./src/Infraestruture/repositories/InMemoryAccountRepository");
 
-const CreateAccount = require("./src/Application/UseCases/CreateAccount");
+// Use Cases
+const CreateAccount = require("./src/application/UseCases/CreateAccount");
 const Deposit = require("./src/application/UseCases/Deposit");
 const Withdraw = require("./src/application/UseCases/Withdraw");
 const GetAccount = require("./src/application/UseCases/GetAccount");
 const Transfer = require("./src/application/UseCases/Transfer");
 const GetAllAccounts = require("./src/application/UseCases/GetAllAccounts");
+const UploadFile = require("./src/application/UseCases/UploadFile");
 
-const AccountController = require("./src/interfaces/http/AccountController");
+// Controllers
+const AccountController = require("./src/interfaces/http/controllers/AccountController");
+const FileController = require("./src/interfaces/http/controllers/FileController");
 
-// Roteamento 
-const createAccountRoutes = require("./src/interfaces/http/routes/accountRoutes");
+// Routes
+const accountRoutes = require("./src/interfaces/http/routes/accountRoutes");
 
 const app = express();
 app.use(express.json());
 
-// instancia repository
+/* =========================
+   INSTÂNCIAS
+========================= */
+
+// Repository
 const repo = new InMemoryAccountRepository();
 
-// instancia use cases
+// Use Cases
 const createAccount = new CreateAccount(repo);
 const deposit = new Deposit(repo);
 const withdraw = new Withdraw(repo);
 const getAccount = new GetAccount(repo);
 const transfer = new Transfer(repo);
 const getAllAccounts = new GetAllAccounts(repo);
+const uploadFile = new UploadFile(repo);
 
-// controller
-const controller = new AccountController(
+// Controllers
+const accountController = new AccountController(
     createAccount,
     deposit,
     withdraw,
@@ -39,8 +49,17 @@ const controller = new AccountController(
     getAllAccounts
 );
 
-// Definir routas globais
-app.use("/", createAccountRoutes(controller));
+const fileController = new FileController(uploadFile);
+
+/* =========================
+   ROUTES
+========================= */
+
+app.use("/", accountRoutes(accountController, fileController));
+
+/* =========================
+   SERVER
+========================= */
 
 const PORT = process.env.PORT || 3000;
 

@@ -8,18 +8,20 @@ class CreateAccount {
   }
 
   execute(id, ownerName) {
-    // validação
-    if (!id || !ownerName) {
+
+    const normalizedId = Number(id);
+
+    if (!normalizedId || !ownerName) {
       throw new Error("Invalid input");
     }
 
-    // verifica se já existe
-    const existing = this.accountRepository.findById(id);
+    const existing = this.accountRepository.findById(normalizedId);
+
     if (existing) {
       throw new Error("Account already exists");
     }
 
-    // ✅ cria a entidade corretamente
+    // cria a entidade corretamente
     const account = new Account(id, ownerName);
 
     // guarda no repository

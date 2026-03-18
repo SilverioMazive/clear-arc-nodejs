@@ -5,7 +5,7 @@ class Account {
         if (!id) throw new Error("Id is required");
         if (!ownerName) throw new Error("Owner name is required");
 
-        this.id = id;
+        this.id = Number(id);
         this.ownerName = ownerName;
         this.balance = 0;
     }

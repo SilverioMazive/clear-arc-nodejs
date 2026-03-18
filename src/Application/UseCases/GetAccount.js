@@ -6,7 +6,9 @@ class GetAccount {
     }
 
     execute(id) {
-        const account = this.accountRepository.findById(id);
+
+        const normalizeId = Number(id);
+        const account = this.accountRepository.findById(normalizeId);
 
         if (!account) {
             throw new Error("Account not found");

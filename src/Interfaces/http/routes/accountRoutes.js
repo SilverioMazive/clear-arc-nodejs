@@ -1,10 +1,13 @@
 // src/interfaces/http/routes/accountRoutes.js
-const express = require("express");
 
-module.exports = (accountController) => {
+const express = require("express");
+const validateRequest = require('../middlewares/validateRequest');
+const upload = require('../middlewares/uploadMiddleware');
+
+module.exports = (accountController, fileController) => {
     const router = express.Router();
 
-    router.post("/accounts", (req, res) =>
+    router.post("/accounts", validateRequest, (req, res) =>
         accountController.create(req, res)
     );
 
@@ -26,6 +29,13 @@ module.exports = (accountController) => {
 
     router.get("/accounts-all", (req, res) =>
         accountController.getAll(req, res)
+    );
+
+    // Falta teste com isso
+    router.post(
+        "/accounts-upload/photo/:id",
+        upload.single("file"),
+        (req, res) => fileController.upload(req, res)
     );
 
     return router;
